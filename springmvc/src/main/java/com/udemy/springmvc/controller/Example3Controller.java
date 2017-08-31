@@ -1,7 +1,10 @@
 package com.udemy.springmvc.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,32 +18,36 @@ import com.udemy.springmvc.model.Person;
 @RequestMapping("/example3")
 public class Example3Controller {
 
-	public static final String FORM_VIEW="form";
-	public static final String RESUL_VIEW="result";
-	
-	//#1
+	public static final String FORM_VIEW = "form";
+	public static final String RESUL_VIEW = "result";
+
+	// #1
 	/*
+	 * @GetMapping("/") public String redirect(){ return
+	 * "redirect:/example3/showform"; }
+	 */
 	@GetMapping("/")
-	public String redirect(){
-		return "redirect:/example3/showform";
-	}*/
-	@GetMapping("/")
-	public RedirectView redirect(){
+	public RedirectView redirect() {
 		return new RedirectView("/example3/showform");
 	}
-	
+
 	@GetMapping("/showform")
-	public String showForm(Model model){
-		model.addAttribute("person",new Person());
-		int r=6/0;
+	public String showForm(Model model) {
+		model.addAttribute("person", new Person());
 		return FORM_VIEW;
 	}
-	
-	
+
 	@PostMapping("/addperson")
-	public ModelAndView addPerson(@ModelAttribute(name="person")Person person){
-		ModelAndView mav=new  ModelAndView(RESUL_VIEW);
-		mav.addObject("person",person);
-		return mav;
+	public ModelAndView addPerson(@Valid @ModelAttribute(name = "person") Person person, BindingResult bindingResult) {
+		try {
+			ModelAndView mav = new ModelAndView(RESUL_VIEW);
+			mav.addObject("person", person);
+
+			return mav;
+		} catch (Exception e) {
+			System.out.println(e.toString());
+			return null;
+		}
+
 	}
 }

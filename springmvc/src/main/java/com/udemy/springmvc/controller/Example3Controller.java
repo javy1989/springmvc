@@ -39,15 +39,15 @@ public class Example3Controller {
 
 	@PostMapping("/addperson")
 	public ModelAndView addPerson(@Valid @ModelAttribute(name = "person") Person person, BindingResult bindingResult) {
-		try {
-			ModelAndView mav = new ModelAndView(RESUL_VIEW);
-			mav.addObject("person", person);
 
-			return mav;
-		} catch (Exception e) {
-			System.out.println(e.toString());
-			return null;
+		ModelAndView mav = new ModelAndView();
+		if (bindingResult.hasErrors()) {
+			mav.setViewName(FORM_VIEW);
+		}else{
+			mav.addObject("person", person);
+			mav.setViewName(RESUL_VIEW);
 		}
+		return mav;
 
 	}
 }

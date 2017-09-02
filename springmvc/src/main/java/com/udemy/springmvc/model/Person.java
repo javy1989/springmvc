@@ -1,5 +1,6 @@
 package com.udemy.springmvc.model;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -9,7 +10,7 @@ public class Person {
 	@Size(min=2,max=6)
 	private String name;
 	@NotNull
-	@Size(min=18)
+	@Min(18)
 	private int age;
 	
 	
